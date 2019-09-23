@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+   spiders:
+     image: scrap_github
+     build:
+       context: scrapper
+       dockerfile: Dockerfile
+    #  environment:
+    #    - repo_name=pallets/flask
+    #  volumes:
+    #    - ./output:/output/:rw
+     links:
+       - scrapyd
+     depends_on:
+       - scrapyd
+   scrapyd:
+     container_name: scrapyd
+     image: scrapyd
+     build:
+       context: scrapyd
+       dockerfile: Dockerfile
+     restart: always
+     ports:
+       - "0:6800:6800"
