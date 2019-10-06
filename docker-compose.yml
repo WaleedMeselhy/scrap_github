@@ -1,25 +1,56 @@
 version: '3.3'
 
 services:
-   spiders:
-     image: scrap_github
-     build:
-       context: scrapper
-       dockerfile: Dockerfile
-    #  environment:
-    #    - repo_name=pallets/flask
-    #  volumes:
-    #    - ./output:/output/:rw
-     links:
-       - scrapyd
-     depends_on:
-       - scrapyd
-   scrapyd:
-     container_name: scrapyd
-     image: scrapyd
-     build:
-       context: scrapyd
-       dockerfile: Dockerfile
+   database:
+     image: postgres:10.5-alpine
      restart: always
+     env_file: dev.env
      ports:
-       - "0:6800:6800"
+       - 0:5432:5432
+   migration:
+     image: migrations
+     env_file: dev.env
+     build:
+        context: ./
+        dockerfile: migrations/Dockerfile
+     links:
+       - database
+     depends_on:
+       - database
+     command: alembic upgrade head
+    #  command: tail -f /dev/null
+   repo_viewer:
+     image: repo_viewer
+     env_file: dev.env
+     build:
+        context: ./
+        dockerfile: repo_viewer/Dockerfile
+     links:
+       - migration
+     depends_on:
+       - database
+     ports:
+       - 0:5000:5000
+
+  #  spiders:
+  #    image: scrap_github
+  #    build:
+  #      context: scrapper
+  #      dockerfile: Dockerfile
+  #   #  environment:
+  #   #    - repo_name=pallets/flask
+  #   #  volumes:
+  #   #    - ./output:/output/:rw
+  #    links:
+  #      - scrapyd
+  #    depends_on:
+  #      - scrapyd
+  #  scrapyd:
+  #    container_name: scrapyd
+  #    image: scrapyd
+  #    build:
+  #      context: scrapyd
+  #      dockerfile: Dockerfile
+  #    restart: always
+  #    ports:
+  #      - "0:6800:6800"

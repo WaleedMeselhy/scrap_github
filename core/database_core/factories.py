@@ -1,5 +1,5 @@
 from schematics.models import Model
-from schematics.types import (StringType, ListType, ModelType)
+from schematics.types import (IntType, StringType, ListType, ModelType)
 
 from .database.schema import Repo as AlchemyRepo
 
@@ -33,6 +33,6 @@ class Base(Model):
 class Repo(Base, SQLAlchemyMixin):
     alchemy_model = AlchemyRepo
 
-    id = StringType(required=True)
+    id = IntType(required=True)
     name = StringType(required=True)
     deps = ListType(ModelType('Repo'))

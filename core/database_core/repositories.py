@@ -83,25 +83,23 @@ class RepoRepository(DefaultRepository):
 
     def create(self, gateway, **kwargs):
         with gateway.session_scope() as session:
-            balance = kwargs.pop('balance', None)
-            usr = gateway.create(session, self.model.alchemy_model, **kwargs)
-            gateway.create(session,
-                           Deposit.alchemy_model,
-                           user_id=usr.user_id,
-                           amount=balance)
-            session.refresh(usr)
-            obj = self.model.from_alchemy(usr)
+            kwargs.pop('deps', None)
+            repo = gateway.create(session, self.model.alchemy_model, **kwargs)
+            session.refresh(repo)
+            obj = self.model.from_alchemy(repo)
         return obj
 
     def get_or_create(self, gateway, defaults=None, **kwargs):
         raise NotImplementedError("TODO: to be implemented")
 
-    def get_all_users(self, gateway):
-        return self.get_all(gateway)
-
-    def get_user(self, gateway, user_id):
-        model = self.model.alchemy_model
+    def add_dependant(self, gateway, repo_id, dep):
         with gateway.session_scope() as session:
-            objs = session.query(model).filter(model.user_id == user_id)
-            objs = list(map(lambda obj: self.model.from_alchemy(obj), objs))
-        return objs
+            repo = gateway.get_by_id(session, self.model.alchemy_model,
+                                     repo_id)
+            dep_repo = gateway.get_by_id(session, self.model.alchemy_model,
+                                         dep['id'])
+            if dep_repo is None:
+                dep.pop('deps', None)
+                dep_repo = gateway.create(session, self.model.alchemy_model,
+                                          **dep)
+            repo.deps.append(dep_repo)

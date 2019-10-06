@@ -6,7 +6,7 @@ from flask import jsonify, request, abort, make_response
 from schematics.exceptions import ValidationError, DataError
 from sqlalchemy.exc import IntegrityError
 
-repo_repository = PodRepository()
+repo_repository = RepoRepository()
 
 
 
