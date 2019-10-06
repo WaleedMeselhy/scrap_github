@@ -68,6 +68,9 @@ class Repo(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    repo_url = Column(String)
+    stars = Column(Integer)
+    forked = Column(Integer)
 
     # this relationship is used for persistence
     deps = relationship("Repo",

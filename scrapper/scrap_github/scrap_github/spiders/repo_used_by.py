@@ -35,7 +35,7 @@ class RepoUsedBySpider(scrapy.Spider):
                 './/*[@class="octicon octicon-repo-forked"]/parent::node()/text()'
             ).extract()[1].replace(' ', '').replace('\n', '')
             yield {
-                'repo_name': repo_name,
+                'name': repo_name,
                 'stars': stars,
                 'forked': forked,
                 'repo_url': f'{self.github_url}/{repo_url}'
