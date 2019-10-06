@@ -67,8 +67,8 @@ class Repo(Base):
     __tablename__ = 'repo'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    repo_url = Column(String)
+    name = Column(String, unique=True)
+    repo_url = Column(String, unique=True)
     stars = Column(Integer)
     forked = Column(Integer)
 

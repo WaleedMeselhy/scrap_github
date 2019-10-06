@@ -35,4 +35,7 @@ class Repo(Base, SQLAlchemyMixin):
 
     id = IntType(required=True)
     name = StringType(required=True)
+    stars = IntType()
+    forked = IntType()
+    repo_url = StringType(required=True)
     deps = ListType(ModelType('Repo'))

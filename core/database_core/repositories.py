@@ -89,15 +89,16 @@ class RepoRepository(DefaultRepository):
             obj = self.model.from_alchemy(repo)
         return obj
 
-    def get_or_create(self, gateway, defaults=None, **kwargs):
-        raise NotImplementedError("TODO: to be implemented")
+    # def get_or_create(self, gateway, defaults=None, **kwargs):
+    #     raise NotImplementedError("TODO: to be implemented")
 
     def add_dependant(self, gateway, repo_id, dep):
         with gateway.session_scope() as session:
             repo = gateway.get_by_id(session, self.model.alchemy_model,
                                      repo_id)
-            dep_repo = gateway.get_by_id(session, self.model.alchemy_model,
-                                         dep['id'])
+            dep_repo = gateway.get(session,
+                                   self.model.alchemy_model,
+                                   name=dep['name'])
             if dep_repo is None:
                 dep.pop('deps', None)
                 dep_repo = gateway.create(session, self.model.alchemy_model,

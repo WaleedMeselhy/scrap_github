@@ -5,6 +5,8 @@ from datetime import datetime
 from schematics.exceptions import ValidationError, DataError
 from sqlalchemy.exc import IntegrityError
 import logging
+from contextlib import suppress
+
 # -*- coding: utf-8 -*-
 
 # Define your item pipelines here
@@ -14,14 +16,23 @@ import logging
 
 
 class ScrapGithubPipeline(object):
-    def __init__(self):
+    def __init__(self, repo_name):
+        self.repo_name = repo_name
         self.repo_repository = RepoRepository()
+        self.repo = self.repo_repository.get_or_create(DBGateway,
+                                                       defaults=None,
+                                                       name=repo_name)[0]
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        repo_name = getattr(crawler.spider, 'repo_name')
+        return cls(repo_name)
 
     def process_item(self, item, spider):
-        logging.log(logging.WARNING, "aa")
-        logging.log(logging.WARNING, str(type(item)))
-        logging.log(logging.WARNING, str(item))
-        repo = Repo(item)
-        self.repo_repository.create(DBGateway, **repo.to_native())
+        dependant_repo = Repo(item)
+        with suppress(IntegrityError):
+            self.repo_repository.add_dependant(DBGateway,
+                                               repo_id=self.repo.id,
+                                               dep=dependant_repo.to_native())
 
         return item
