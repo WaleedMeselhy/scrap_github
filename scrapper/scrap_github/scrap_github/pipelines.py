@@ -19,9 +19,14 @@ class ScrapGithubPipeline(object):
     def __init__(self, repo_name):
         self.repo_name = repo_name
         self.repo_repository = RepoRepository()
-        self.repo = self.repo_repository.get_or_create(DBGateway,
-                                                       defaults=None,
-                                                       name=repo_name)[0]
+        self.repo, created = self.repo_repository.get_or_create(DBGateway,
+                                                                defaults=None,
+                                                                name=repo_name)
+        if created:
+            # to get id
+            self.repo = self.repo_repository.get_or_create(DBGateway,
+                                                           defaults=None,
+                                                           name=repo_name)[0]
 
     @classmethod
     def from_crawler(cls, crawler):
