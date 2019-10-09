@@ -6,9 +6,10 @@ class RepoUsedBySpider(scrapy.Spider):
     name = 'repo_used_by'
     github_url = 'https://github.com'
     repo_name = ''
+    repo_parent = ''
 
     def start_requests(self):
-        used_by_url = f'{self.github_url}/{self.repo_name}/network/dependents'
+        used_by_url = f'{self.github_url}/{self.repo_parent}/{self.repo_name}/network/dependents'
 
         yield scrapy.Request(
             url=used_by_url,

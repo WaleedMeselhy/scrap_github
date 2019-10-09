@@ -36,6 +36,6 @@ WORKDIR /app
 
 ENV PATH="/usr/local/bin:$PATH"
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["scrapy crawl repo_used_by -a repo_name=${repo_name} -o/output/repos.json"]
-# CMD ["-c","scrapyd-deploy local"]
+# CMD ["scrapy crawl repo_used_by -a repo_name=${repo_name} -a repo_parent=${repo_parent} -o/output/repos.json"]
+CMD ["scrapyd-deploy local"]
 # CMD ["-c","while true; do echo 'Hit CTRL+C'; sleep 1; done"]

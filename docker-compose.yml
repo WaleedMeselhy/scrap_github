@@ -43,22 +43,24 @@ services:
        context: .
        dockerfile: scrapper/Dockerfile
      environment:
-       - repo_name=pallets/flask
+       - repo_name=flask
+       - repo_parent=pallets
     #  volumes:
     #    - ./output:/output/:rw
      links:
        - database
-      #  - scrapyd
+       - scrapyd
      depends_on:
        - database
        - migration
-      #  - scrapyd
-  #  scrapyd:
-  #    container_name: scrapyd
-  #    image: scrapyd
-  #    build:
-  #      context: scrapyd
-  #      dockerfile: Dockerfile
-  #    restart: always
-  #    ports:
-  #      - "0:6800:6800"
+       - scrapyd
+   scrapyd:
+     container_name: scrapyd
+     image: scrapyd
+     build:
+       context: .
+       dockerfile: scrapyd/Dockerfile
+     restart: always
+     env_file: dev.env
+     ports:
+       - "0:6800:6800"
