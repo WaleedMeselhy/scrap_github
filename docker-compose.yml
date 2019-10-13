@@ -23,18 +23,18 @@ services:
        - database
      command: alembic upgrade head
     #  command: tail -f /dev/null
-  #  repo_viewer:
-  #    image: repo_viewer
-  #    env_file: dev.env
-  #    build:
-  #       context: ./
-  #       dockerfile: repo_viewer/Dockerfile
-  #    links:
-  #      - migration
-  #    depends_on:
-  #      - database
-  #    ports:
-  #      - 0:5000:5000
+   repo_viewer:
+     image: repo_viewer
+     env_file: dev.env
+     build:
+        context: .
+        dockerfile: repo_viewer/Dockerfile
+     links:
+       - migration
+     depends_on:
+       - database
+     ports:
+       - 0:5000:5000
 
    spiders:
      image: scrap_github
