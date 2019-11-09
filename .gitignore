@@ -4,14 +4,14 @@ __pycache__
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
-/out-tsc
+frontend/dist
+frontend/tmp
+frontend/out-tsc
 # Only exists if Bazel was run
-/bazel-out
+frontend/bazel-out
 
 # dependencies
-/node_modules
+frontend/node_modules
 
 # profiling files
 chrome-profiler-events*.json
@@ -35,14 +35,14 @@ speed-measure-plugin*.json
 .history/*
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+frontend/.sass-cache
+frontend/connect.lock
+frontend/coverage
+frontend/libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+frontend/typings
 
 # System Files
 .DS_Store
