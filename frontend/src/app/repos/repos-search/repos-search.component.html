@@ -1,0 +1,55 @@
+<div class="col-md-12">
+  <form (ngSubmit)="on_search(f)" #f="ngForm">
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <label for="names">Names</label>
+        <tag-input
+          [editable]="true"
+          id="names"
+          inputClass="form-control"
+          name="names"
+          ngModel
+          placeholder="+ Name"
+          secondaryPlaceholder="+ Name"
+          required
+        ></tag-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <label for="stars">stars</label>
+        <input
+          type="number"
+          id="stars"
+          class="form-control"
+          name="stars"
+          [ngModel]="0"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <label for="forked">forked</label>
+        <input
+          type="number"
+          id="forked"
+          class="form-control"
+          name="forked"
+          [ngModel]="0"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <button class="btn btn-success" [disabled]="!f.valid" type="submit">
+          search
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

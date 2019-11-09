@@ -1,0 +1,26 @@
+<div class="col-md-12">
+  <div class="table-responsive-md">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">no.</th>
+          <th scope="col">repo id</th>
+          <th scope="col">repo name</th>
+          <th scope="col">repo url</th>
+          <th scope="col">stars</th>
+          <th scope="col">forked</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let repo of repos; let i = index" (click)="onClick(i)">
+          <th scope="row">{{ i }}</th>
+          <td>{{ repo.id }}</td>
+          <td>{{ repo.name }}</td>
+          <td>{{ repo.repo_url }}</td>
+          <td>{{ repo.stars }}</td>
+          <td>{{ repo.forked }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
