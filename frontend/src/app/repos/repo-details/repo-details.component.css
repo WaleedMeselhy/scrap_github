@@ -1,0 +1,33 @@
+.repoDetails {
+  width: 50%;
+  /* height: 50%; */
+  margin: 0;
+  left: 25%;
+  top: 25%;
+  background: white;
+  position: fixed;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+}
+.parentDiv {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+.parentDiv::before {
+  display: block;
+  content: "";
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #333;
+  opacity: 0.5;
+}

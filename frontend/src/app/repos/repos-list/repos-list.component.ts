@@ -20,17 +20,22 @@ export class ReposListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params: Params) => {
-      this.repoService
-        .fetchRepos(params.repos_names, params.stars, params.forked)
-        .subscribe();
-    });
-
+    let repos_names = this.route.snapshot.queryParams["repos_names"];
+    let stars = this.route.snapshot.queryParams["stars"];
+    let forked = this.route.snapshot.queryParams["forked"];
+    // this.route.queryParams.subscribe((params: Params) => {
+    //   this.repoService
+    //     .fetchRepos(params.repos_names, params.stars, params.forked)
+    //     .subscribe();
+    // });
+    this.repoService
+      .fetchRepos(repos_names, stars, forked)
+      .subscribe();
     this.subscription = this.repoService.repoChanged.subscribe(
       (repos: any[]) => {
         this.repos = repos;
       }
     );
-    this.repos = this.repoService.getRepos();
+    // this.repos = this.repoService.getRepos();
   }
 }

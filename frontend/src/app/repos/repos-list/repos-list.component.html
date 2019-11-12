@@ -12,9 +12,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let repo of repos; let i = index" (click)="onClick(i)">
+        <tr *ngFor="let repo of repos; let i = index">
           <th scope="row">{{ i }}</th>
-          <td>{{ repo.id }}</td>
+          <td>
+            <a
+              [routerLink]="[repo.id]"
+              routerLinkActive="active"
+              style="cursor: pointer;"
+            >
+              {{ repo.id }}
+            </a>
+          </td>
           <td>{{ repo.name }}</td>
           <td>{{ repo.repo_url }}</td>
           <td>{{ repo.stars }}</td>
@@ -24,3 +32,4 @@
     </table>
   </div>
 </div>
+

@@ -8,8 +8,10 @@ import { TagInputModule } from "ngx-chips";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ReposSearchComponent } from "./repos/repos-search/repos-search.component";
 import { AppRoutingModule } from "./app-routing.module";
+import { RepoDetailsComponent } from './repos/repo-details/repo-details.component';
+import { ReposComponent } from './repos/repos.component';
 @NgModule({
-  declarations: [AppComponent, ReposListComponent, ReposSearchComponent],
+  declarations: [AppComponent, ReposListComponent, ReposSearchComponent, RepoDetailsComponent, ReposComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

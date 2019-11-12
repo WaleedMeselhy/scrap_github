@@ -22,11 +22,17 @@ export class ReposSearchComponent implements OnInit {
     for (let i = 0; i < names.length; i++) {
       repos_names.push(names[i].value);
     }
-    this.reposService.fetchRepos(repos_names, stars, forked).subscribe(() => {
-      this.router.navigate(["/repos"], {
-        queryParams: { repos_names: repos_names, stars: stars, forked: forked }
+    this.reposService
+      .fetchRepos(repos_names, stars, forked)
+      .subscribe(response => {
+        this.router.navigate(["/repos"], {
+          queryParams: {
+            repos_names: repos_names,
+            stars: stars,
+            forked: forked
+          }
+        });
       });
-    });
   }
   onClick(i) {
     console.log("test");
