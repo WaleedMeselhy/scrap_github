@@ -3,7 +3,7 @@ from datetime import timedelta
 from database_core.factories import Repo
 from decimal import Decimal
 from sqlalchemy import or_, and_, desc, func
-from sqlalchemy.orm import aliased
+from sqlalchemy.orm import aliased, contains_eager, eagerload
 # from .database.gateway import session_scope
 
 # from sqlalchemy.orm import with_expression
@@ -79,6 +79,29 @@ class DefaultRepository(object):
 class RepoRepository(DefaultRepository):
     model = Repo
     model_id_field = 'id'
+
+    def get_by_id(self, gateway, ident):
+        repo_model = self.model.alchemy_model
+        repoalias = aliased(repo_model)
+        with gateway.session_scope() as session:
+            obj = session.query(repo_model).filter_by(id=ident).outerjoin(
+                repoalias, repo_model.dependencies).options(
+                    contains_eager(repo_model.dependencies,
+                                   alias=repoalias)).first()
+
+            print('ssssssssssss', obj.deps)
+            deps = obj.deps
+            deps = [self.model.from_alchemy(repo) for repo in deps]
+            obj = self.model.from_alchemy(obj) if obj else None
+            if obj:
+                obj.deps = deps
+        # with gateway.session_scope() as session:
+        #     objs = session.query(repo_model).filter_by(id=ident).options(
+        #         eagerload(repo_model.deps)).all()
+        #     # for a in obj:
+        #     #     print(a)
+        #     obj = self.model.from_alchemy(objs[0]) if objs else None
+        return obj
 
     def create(self, gateway, **kwargs):
         with gateway.session_scope() as session:

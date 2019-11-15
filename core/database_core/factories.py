@@ -39,3 +39,4 @@ class Repo(Base, SQLAlchemyMixin):
     forked = IntType()
     repo_url = StringType(required=True)
     deps = ListType(ModelType('Repo'))
+    dependencies = ListType(ModelType('Repo'))

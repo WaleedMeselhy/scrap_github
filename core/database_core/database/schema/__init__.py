@@ -27,8 +27,14 @@ class Base(object):
             setattr(self, key, kwargs[key])
 
     def to_dict(self):
+        # for k, v in self.__dict__.items():
+        #     print(k, v, type(v), type(v).__name__)
+        #     if type(
+        #             v
+        #     ).__name__ == 'InstrumentedList':
+        #         print('aaaaaaaaaa')
         return {
-            k: v
+            k: v if type(v).__name__ != 'InstrumentedList' else None
             for k, v in self.__dict__.items() if not k.startswith('_')
         }
 
@@ -75,10 +81,10 @@ class Repo(Base):
     # this relationship is used for persistence
     deps = relationship("Repo",
                         secondary=dependents,
-                        lazy='dynamic',
+                        lazy='joined',
                         primaryjoin=id == dependents.c.repo_dependent_id,
                         secondaryjoin=id == dependents.c.repo_dependency_id,
-                        backref=backref('dependencies', lazy='dynamic'))
+                        backref=backref('dependencies', lazy='joined'))
 
     def __repr__(self):
         return "Repo(%r)" % self.name

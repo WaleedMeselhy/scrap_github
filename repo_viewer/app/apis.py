@@ -19,3 +19,12 @@ def get_repo_depends_on():
         return jsonify([obj.to_native() for obj in objs]), 200
     except (ValidationError, DataError) as e:
         abort(make_response(jsonify(e.to_primitive()), 400))
+
+
+def get_repo(repo_id):
+    try:
+        obj = repo_repository.get_by_id(DBGateway, repo_id)
+        if obj:
+            return jsonify(obj.to_native()), 200
+    except (ValidationError, DataError) as e:
+        abort(make_response(jsonify(e.to_primitive()), 400))
