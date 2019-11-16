@@ -22,7 +22,7 @@ export class ReposService {
       searchParams = searchParams.append("forked", forked);
       this.params["forked"] = forked;
     }
-   
+
     return this.http
       .get<any[]>("http://localhost:5000/repo/", { params: searchParams })
       .pipe(
@@ -42,5 +42,8 @@ export class ReposService {
       }
     }
     return null;
+  }
+  fetchRepoDeps(repo_id: number) {
+    return this.http.get<any[]>("http://localhost:5000/repo/" + repo_id);
   }
 }

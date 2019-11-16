@@ -20,6 +20,9 @@ export class RepoDetailsComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.id = +params["id"];
       this.repo = this.repoService.getRepo(this.id);
+      this.repoService.fetchRepoDeps(this.id).subscribe(response => {
+        this.repo.deps = response["deps"];
+      });
     });
   }
   onClick() {
