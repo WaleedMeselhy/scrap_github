@@ -1,66 +1,77 @@
-version: '3.3'
+version: "3.3"
 
 services:
-  
-   database:
-     image: postgres:10.5-alpine
-     restart: always
-     env_file: dev.env
-     ports:
-       - 0:5432:5432
-     volumes:
-       - ./db_data/:/var/lib/postgresql/data/
+  database:
+    image: postgres:10.5-alpine
+    restart: always
+    env_file: dev.env
+    ports:
+      - 0:5432:5432
+    volumes:
+      - ./db_data/:/var/lib/postgresql/data/
 
-   migration:
-     image: migrations
-     env_file: dev.env
-     build:
-        context: ./
-        dockerfile: migrations/Dockerfile
-     links:
-       - database
-     depends_on:
-       - database
-     command: alembic upgrade head
+  migration:
+    image: migrations
+    env_file: dev.env
+    build:
+      context: ./
+      dockerfile: migrations/Dockerfile
+    links:
+      - database
+    depends_on:
+      - database
+    command: alembic upgrade head
     #  command: tail -f /dev/null
-   repo_viewer:
-     image: repo_viewer
-     env_file: dev.env
-     build:
-        context: .
-        dockerfile: repo_viewer/Dockerfile
-     links:
-       - migration
-     depends_on:
-       - database
-     ports:
-       - 0:5000:5000
+  repo_viewer:
+    image: repo_viewer
+    env_file: dev.env
+    build:
+      context: .
+      dockerfile: repo_viewer/Dockerfile
+    links:
+      - database
+    depends_on:
+      - database
+    ports:
+      - 0:5000:5000
 
-   spiders:
-     image: scrap_github
-     env_file: dev.env
-     build:
-       context: .
-       dockerfile: scrapper/Dockerfile
-     environment:
-       - repo_name=flask
-       - repo_parent=pallets
+  frontend:
+    image: frontend
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    links:
+      - repo_viewer
+    depends_on:
+      - repo_viewer
+    ports:
+      - 0:80:80
+
+  spiders:
+    image: scrap_github
+    env_file: dev.env
+    build:
+      context: .
+      dockerfile: scrapper/Dockerfile
+    environment:
+      - repo_name=flask
+      - repo_parent=pallets
     #  volumes:
     #    - ./output:/output/:rw
-     links:
-       - database
-       - scrapyd
-     depends_on:
-       - database
-       - migration
-       - scrapyd
-   scrapyd:
-     container_name: scrapyd
-     image: scrapyd
-     build:
-       context: .
-       dockerfile: scrapyd/Dockerfile
-     restart: always
-     env_file: dev.env
-     ports:
-       - "0:6800:6800"
+    links:
+      - database
+      - scrapyd
+    depends_on:
+      - database
+      - migration
+      - scrapyd
+  scrapyd:
+    container_name: scrapyd
+    image: scrapyd
+    build:
+      context: .
+      dockerfile: scrapyd/Dockerfile
+    restart: always
+    env_file: dev.env
+    ports:
+      - "0:6800:6800"

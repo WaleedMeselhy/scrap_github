@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Subject, Observable } from "rxjs";
 import { HttpParams, HttpClient } from "@angular/common/http";
 import { tap } from "rxjs/operators";
+import { environment } from "../../environments/environment";
 @Injectable({
   providedIn: "root"
 })
@@ -24,7 +25,7 @@ export class ReposService {
     }
 
     return this.http
-      .get<any[]>("http://localhost:5000/repo/", { params: searchParams })
+      .get<any[]>(environment.backend_url + "/repo/", { params: searchParams })
       .pipe(
         tap(repos => {
           this.repoChanged.next(repos);
@@ -44,6 +45,6 @@ export class ReposService {
     return null;
   }
   fetchRepoDeps(repo_id: number) {
-    return this.http.get<any[]>("http://localhost:5000/repo/" + repo_id);
+    return this.http.get<any[]>(environment.backend_url + "/repo/" + repo_id);
   }
 }
