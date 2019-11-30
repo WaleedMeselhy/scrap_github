@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subject, Observable } from "rxjs";
+import { Subject, Observable, forkJoin } from "rxjs";
 import { HttpParams, HttpClient } from "@angular/common/http";
 import { tap } from "rxjs/operators";
 import { environment } from "../../environments/environment";
@@ -59,6 +59,16 @@ export class ReposService {
     return null;
   }
   fetchRepoDeps(repo_id: number) {
-    return this.http.get<any[]>(environment.backend_url + "/repo/" + repo_id);
+    return this.http.get<any[]>(environment.backend_url + "/repo/v2/" + repo_id);
+  }
+  fetchRepoDepsDetails(repos: []) {
+    let repos_details = [];
+    for (let i = 0; i < repos.length; i++) {
+      repos_details.push(
+        this.http.get<any[]>(environment.backend_url + repos[i])
+      );
+    }
+
+    return forkJoin(repos_details);
   }
 }

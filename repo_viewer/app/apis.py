@@ -52,7 +52,7 @@ def get_repo_v2(repo_id):
             deps = obj.deps
             obj.deps = []
             obj = obj.to_native()
-            obj['deps'] = [f'/repo/{dep.id}' for dep in deps]
+            obj['deps'] = [f'/repo/v2/{dep.id}' for dep in deps]
             return jsonify(obj), 200
     except (ValidationError, DataError) as e:
         abort(make_response(jsonify(e.to_primitive()), 400))
