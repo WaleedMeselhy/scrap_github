@@ -31,7 +31,7 @@ def get_repo_depends_on_v2():
                                                           stars,
                                                           forked,
                                                           rest=True)
-        return jsonify({'repos': [f'/repo/{obj.id}' for obj in objs]}), 200
+        return jsonify({'repos': [f'/repo/v2/{obj.id}' for obj in objs]}), 200
     except (ValidationError, DataError) as e:
         abort(make_response(jsonify(e.to_primitive()), 400))
 

@@ -21,6 +21,9 @@ export class ReposListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     let repos_names = this.route.snapshot.queryParams["repos_names"];
+    if (!(repos_names instanceof Array)) {
+      repos_names = [repos_names];
+    }
     let stars = this.route.snapshot.queryParams["stars"];
     let forked = this.route.snapshot.queryParams["forked"];
     this.route.queryParams.subscribe((params: Params) => {
