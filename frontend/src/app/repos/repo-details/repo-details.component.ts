@@ -21,7 +21,13 @@ export class RepoDetailsComponent implements OnInit {
       this.id = +params["id"];
       this.repo = this.repoService.getRepo(this.id);
       this.repoService.fetchRepoDeps(this.id).subscribe(response => {
-        this.repo.deps = response["deps"];
+        let deps = response["deps"];
+        this.repoService.fetchRepoDepsDetails(deps).subscribe(results => {
+          this.repo.deps = [];
+          for (let i = 0; i < results.length; i++) {
+            this.repo.deps.push(results[i]);
+          }
+        });
       });
     });
   }
