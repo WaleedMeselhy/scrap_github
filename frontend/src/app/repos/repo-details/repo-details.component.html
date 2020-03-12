@@ -1,5 +1,5 @@
 <div class="parentDiv" (click)="onClick()">
-  <div class="repoDetails">
+  <div class="repoDetails" (click)="$event.stopPropagation()">
     <div class="row">
       <div class="col-md-5">repo id:{{ repo.id }}</div>
     </div>

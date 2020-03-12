@@ -12,15 +12,15 @@ export class ReposService {
   repos = [];
   params = {};
   checkParamsChange(names, stars, forked) {
-    if (this.params["repos_names"] || this.params["stars"] || this.params["forked"]) {
+    if (names || stars || forked) {
       if (
         this.params["repos_names"] &&
         this.params["repos_names"].length === names.length &&
         this.params["repos_names"].every((value, index) => value === names[index])
       ) {
         if (
-          this.params["stars"] === +stars &&
-          this.params["forked"] === +forked
+          +this.params["stars"] === +stars &&
+          +this.params["forked"] === +forked
         ) {
           return false;
         } else return true;
@@ -31,7 +31,11 @@ export class ReposService {
   fetchRepos(names, stars, forked) {
     let searchParams = new HttpParams();
     searchParams = searchParams.append("deps", names);
-    this.params["repos_names"] = names;
+    if (!(names instanceof Array)) {
+      this.params["repos_names"] = [names];
+    } else {
+      this.params["repos_names"] = names;
+    }
     if (stars > 0) {
       searchParams = searchParams.append("stars", stars);
     }
