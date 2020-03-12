@@ -7,23 +7,26 @@ import { environment } from "../../environments/environment";
   providedIn: "root"
 })
 export class ReposService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   repoChanged = new Subject<any[]>();
   repos = [];
   params = {};
   checkParamsChange(names, stars, forked) {
-    if (
-      this.params["repos_names"] &&
-      this.params["repos_names"].length === names.length &&
-      this.params["repos_names"].every((value, index) => value === names[index])
-    ) {
+    if (this.params["repos_names"] || this.params["stars"] || this.params["forked"]) {
       if (
-        this.params["stars"] === +stars &&
-        this.params["forked"] === +forked
+        this.params["repos_names"] &&
+        this.params["repos_names"].length === names.length &&
+        this.params["repos_names"].every((value, index) => value === names[index])
       ) {
-        return false;
+        if (
+          this.params["stars"] === +stars &&
+          this.params["forked"] === +forked
+        ) {
+          return false;
+        } else return true;
       } else return true;
-    } else return true;
+    }
+    else return false
   }
   fetchRepos(names, stars, forked) {
     let searchParams = new HttpParams();
