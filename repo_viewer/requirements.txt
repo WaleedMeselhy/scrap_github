@@ -4,7 +4,7 @@ gunicorn==19.7.1
 coverage==4.4.1
 flake8===3.4.1
 flask-cors==3.0.3
-requests==2.18.4
+requests==2.20.0
 Flask-Env==2.0.0
 simplejson==3.16.0
 schematics==2.1.0
