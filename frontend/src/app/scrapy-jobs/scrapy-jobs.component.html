@@ -1,0 +1,30 @@
+<div class="col-md-12">
+  <form (ngSubmit)="on_submit(f)" #f="ngForm">
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <label for="stars">Url</label>
+        <input
+          type="text"
+          id="url"
+          class="form-control"
+          name="url"
+          ngModel
+          placeholder="https://github.com/pallets/flask"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <button class="btn btn-success" [disabled]="!f.valid" type="submit">
+          submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+

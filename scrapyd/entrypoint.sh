@@ -5,7 +5,6 @@ set -o pipefail
 
 # set -o nounset
 
-
 cmd="$@"
 
 # the official postgres image uses 'postgres' as default user if not set explictly.
@@ -16,8 +15,8 @@ if [ -z "$POSTGRES_PORT" ]; then
     export POSTGRES_PORT=5432
 fi
 export DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
-function postgres_ready(){
-python << END
+function postgres_ready() {
+    python <<END
 import sys
 import psycopg2
 try:
@@ -29,11 +28,11 @@ END
 }
 
 until postgres_ready; do
-  >&2 echo "Postgres is unavailable - sleeping"
-  sleep 1
+    echo >&2 "Postgres is unavailable - sleeping"
+    sleep 1
 done
 
->&2 echo "Postgres is up - continuing..."
->&2 echo -----------$DATABASE_URL
->&2 echo $cmd
+echo >&2 "Postgres is up - continuing..."
+echo >&2 -----------$DATABASE_URL
+echo >&2 $cmd
 exec bash -c "$cmd"

@@ -4,7 +4,7 @@ from flask_env import MetaFlaskEnv
 class BaseConfig(metaclass=MetaFlaskEnv):
     ENV_PREFIX = ''
     ENV_LOAD_ALL = False
-
+    SCRAPYD_HOST = ''
     POSTGRES_DB = None
     POSTGRES_USER = None
     POSTGRES_PASSWORD = None

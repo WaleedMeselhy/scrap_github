@@ -6,6 +6,16 @@ from flask import jsonify, request, abort, make_response
 from schematics.exceptions import ValidationError, DataError
 from sqlalchemy.exc import IntegrityError
 from flask import request
+from flask import current_app
+import requests
+import copy
+import re
+scrapyjob_info = {
+    "project": "scrap_github",
+    "spider": "repo_used_by",
+    "repo_name": "",
+    "repo_parent": ""
+}
 repo_repository = RepoRepository()
 
 
@@ -56,3 +66,20 @@ def get_repo_v2(repo_id):
             return jsonify(obj), 200
     except (ValidationError, DataError) as e:
         abort(make_response(jsonify(e.to_primitive()), 400))
+
+
+def add_scrapyjob():
+    scrapyd_host = f"http://{current_app.config['SCRAPYD_HOST']}/schedule.json"
+    url = request.json['url']
+    data = None
+    if re.match('https://github.com/[^/]+/[^/]+$', url):
+        data = copy.deepcopy(scrapyjob_info)
+        data['repo_name'] = url.split('/')[-1]
+        data['repo_parent'] = url.split('/')[-2]
+        r = requests.post(scrapyd_host, data=data)
+        if r.status_code == 200:
+            return ''
+        else:
+            return '', r.status_code
+    else:
+        return 'not suported', 400

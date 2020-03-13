@@ -14,8 +14,8 @@ if [ -z "$POSTGRES_PORT" ]; then
     export POSTGRES_PORT=5432
 fi
 export DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
-function postgres_ready(){
-python << END
+function postgres_ready() {
+    python <<END
 import sys
 import psycopg2
 try:
@@ -26,14 +26,27 @@ sys.exit(0)
 END
 }
 
+function escrapyd_ready() {
+    response=$(curl --write-out %{http_code} --silent --output /dev/null $SCRAPYD_HOST)
+    if [ $response -ge 200 ]; then
+        return 0
+    else
+        return -1
+    fi
+}
+
+until escrapyd_ready; do
+    echo >&2 "Scrapyd is unavailable - sleeping"
+    sleep 1
+done
+echo >&2 "Scrapyd is up - continuing..."
+
 until postgres_ready; do
-  >&2 echo "Postgres is unavailable - sleeping"
-  sleep 1
+    echo >&2 "Postgres is unavailable - sleeping"
+    sleep 1
 done
 
->&2 echo "Postgres is up - continuing..."
-
-
+echo >&2 "Postgres is up - continuing..."
 
 if [ -z "$cmd" ]; then
     if [ "x$localdev" = "xtrue" ]; then

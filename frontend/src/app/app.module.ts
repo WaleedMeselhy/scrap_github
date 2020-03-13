@@ -10,8 +10,10 @@ import { ReposSearchComponent } from "./repos/repos-search/repos-search.componen
 import { AppRoutingModule } from "./app-routing.module";
 import { RepoDetailsComponent } from './repos/repo-details/repo-details.component';
 import { ReposComponent } from './repos/repos.component';
+import { HeaderComponent } from './header/header.component';
+import { ScrapyJobsComponent } from './scrapy-jobs/scrapy-jobs.component';
 @NgModule({
-  declarations: [AppComponent, ReposListComponent, ReposSearchComponent, RepoDetailsComponent, ReposComponent],
+  declarations: [AppComponent, ScrapyJobsComponent, HeaderComponent, ReposListComponent, ReposSearchComponent, RepoDetailsComponent, ReposComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -23,4 +25,4 @@ import { ReposComponent } from './repos/repos.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

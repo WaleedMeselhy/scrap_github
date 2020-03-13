@@ -16,7 +16,7 @@ WORKDIR /app
 
 FROM base
 ENV PYTHONUNBUFFERED 1
-RUN apk add --no-cache postgresql-dev bash
+RUN apk add --no-cache postgresql-dev bash curl
 
 COPY --from=builder /root/.local /usr/local
 COPY --from=builder /app /app
