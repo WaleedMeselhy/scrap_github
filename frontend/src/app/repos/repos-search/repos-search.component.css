@@ -1,0 +1,7 @@
+:host ::ng-deep tag-input tag-input-form {
+  width: 100%;
+}
+
+:host ::ng-deep tag-input tag {
+  margin-bottom: 5px
+}
